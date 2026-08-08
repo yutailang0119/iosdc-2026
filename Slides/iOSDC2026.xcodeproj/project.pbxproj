@@ -342,8 +342,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mtj0928/SlideKit";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.7.0;
+				kind = revision;
+				revision = 5ba5ccd98a30ec12e2fb3ba391b35c9336bf0cb5;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

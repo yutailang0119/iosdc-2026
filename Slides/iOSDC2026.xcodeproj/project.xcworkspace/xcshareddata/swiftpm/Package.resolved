@@ -6,8 +6,7 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mtj0928/SlideKit",
       "state" : {
-        "revision" : "ee71d2a687da199bf04d42a3ff13b9a1810fe4f1",
-        "version" : "0.7.0"
+        "revision" : "5ba5ccd98a30ec12e2fb3ba391b35c9336bf0cb5"
       }
     },
     {

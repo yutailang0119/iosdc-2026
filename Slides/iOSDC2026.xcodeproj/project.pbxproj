@@ -8,21 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		100CBB9A5B6951BA24B789CE /* SlideKit in Frameworks */ = {isa = PBXBuildFile; productRef = B9BE7F591CA26F4F6114EF16 /* SlideKit */; };
-		113BE0A86830CC9730EB3A9C /* SampleSlide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B23EB78BFB0C08EE3ADB20 /* SampleSlide.swift */; };
-		1E97300F7B09ED3A863343CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AF8F99AA9324BC3BE0F64849 /* Assets.xcassets */; };
-		699B48792D8CD24ED109BB5F /* iOSDC2026App.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63E4867C30827468FAF3E29 /* iOSDC2026App.swift */; };
-		90BCA30F5D76E57D3F6DFA42 /* SlideConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEEADB3A6E22F484BDD414D6 /* SlideConfiguration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		22B23EB78BFB0C08EE3ADB20 /* SampleSlide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleSlide.swift; sourceTree = "<group>"; };
-		46FEF105708B10B0B826DA06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		54E7FDA5A5E09B990D281A2B /* iOSDC2026.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOSDC2026.entitlements; sourceTree = "<group>"; };
 		5BAFDF8BA67E170670753D18 /* iOSDC2026.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSDC2026.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AF8F99AA9324BC3BE0F64849 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		E63E4867C30827468FAF3E29 /* iOSDC2026App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSDC2026App.swift; sourceTree = "<group>"; };
-		EEEADB3A6E22F484BDD414D6 /* SlideConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideConfiguration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6D884F3F302A472B0084FFF4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 7328FFC334BCFA2992DBDD16 /* iOSDC2026 */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		6D884F33302A472A0084FFF4 /* iOSDC2026 */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (6D884F3F302A472B0084FFF4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = iOSDC2026; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		55DBF52D170D2734CE6E59DA /* Frameworks */ = {
@@ -36,23 +40,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		80EB3BDAA30B0C052A244A74 /* iOSDC2026 */ = {
-			isa = PBXGroup;
-			children = (
-				AF8F99AA9324BC3BE0F64849 /* Assets.xcassets */,
-				46FEF105708B10B0B826DA06 /* Info.plist */,
-				54E7FDA5A5E09B990D281A2B /* iOSDC2026.entitlements */,
-				E63E4867C30827468FAF3E29 /* iOSDC2026App.swift */,
-				EEEADB3A6E22F484BDD414D6 /* SlideConfiguration.swift */,
-				D19B4E91A9F8D5970C415EAD /* Slides */,
-			);
-			path = iOSDC2026;
-			sourceTree = "<group>";
-		};
 		A141D2876203BA7BCB31D76A = {
 			isa = PBXGroup;
 			children = (
-				80EB3BDAA30B0C052A244A74 /* iOSDC2026 */,
+				6D884F33302A472A0084FFF4 /* iOSDC2026 */,
 				BFFE3C3EBDF7F48E29CAD4E3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,14 +54,6 @@
 				5BAFDF8BA67E170670753D18 /* iOSDC2026.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		D19B4E91A9F8D5970C415EAD /* Slides */ = {
-			isa = PBXGroup;
-			children = (
-				22B23EB78BFB0C08EE3ADB20 /* SampleSlide.swift */,
-			);
-			path = Slides;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,6 +70,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				6D884F33302A472A0084FFF4 /* iOSDC2026 */,
 			);
 			name = iOSDC2026;
 			packageProductDependencies = (
@@ -131,7 +117,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E97300F7B09ED3A863343CB /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,9 +127,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				113BE0A86830CC9730EB3A9C /* SampleSlide.swift in Sources */,
-				90BCA30F5D76E57D3F6DFA42 /* SlideConfiguration.swift in Sources */,
-				699B48792D8CD24ED109BB5F /* iOSDC2026App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

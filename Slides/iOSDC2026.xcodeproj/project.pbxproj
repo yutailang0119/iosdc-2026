@@ -290,7 +290,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.mtj0928.SlideGen.iOSDC2026;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.yutailang0119.$(PRODUCT_NAME:identifier)";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -309,7 +309,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.github.mtj0928.SlideGen.iOSDC2026;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.yutailang0119.$(PRODUCT_NAME:identifier)";
 				SDKROOT = macosx;
 			};
 			name = Debug;

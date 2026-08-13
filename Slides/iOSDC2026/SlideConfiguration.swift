@@ -14,5 +14,7 @@ struct SlideConfiguration {
   let size = SlideSize.standard16_9
 
   ///  Add your slides into the trailing closure.
-  let slideIndexController = SlideIndexController {}
+  let slideIndexController = SlideIndexController {
+    CoverSlide()
+  }
 }

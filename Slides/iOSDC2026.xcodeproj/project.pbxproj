@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		100CBB9A5B6951BA24B789CE /* SlideKit in Frameworks */ = {isa = PBXBuildFile; productRef = B9BE7F591CA26F4F6114EF16 /* SlideKit */; };
+		6D50503E3030C4F8001051DD /* BytebeatKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6D50503D3030C4F8001051DD /* BytebeatKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				100CBB9A5B6951BA24B789CE /* SlideKit in Frameworks */,
+				6D50503E3030C4F8001051DD /* BytebeatKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +79,7 @@
 			name = iOSDC2026;
 			packageProductDependencies = (
 				B9BE7F591CA26F4F6114EF16 /* SlideKit */,
+				6D50503D3030C4F8001051DD /* BytebeatKit */,
 			);
 			productName = iOSDC2026;
 			productReference = 5BAFDF8BA67E170670753D18 /* iOSDC2026.app */;
@@ -103,6 +106,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				CA9F93F80282C3752FFB9287 /* XCRemoteSwiftPackageReference "SlideKit" */,
+				6D50503C3030C4F8001051DD /* XCLocalSwiftPackageReference "../Packages/BytebeatKit" */,
 			);
 			projectDirPath = "";
 			projectRoot = "";
@@ -319,6 +323,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		6D50503C3030C4F8001051DD /* XCLocalSwiftPackageReference "../Packages/BytebeatKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../Packages/BytebeatKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		CA9F93F80282C3752FFB9287 /* XCRemoteSwiftPackageReference "SlideKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -331,6 +342,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6D50503D3030C4F8001051DD /* BytebeatKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BytebeatKit;
+		};
 		B9BE7F591CA26F4F6114EF16 /* SlideKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CA9F93F80282C3752FFB9287 /* XCRemoteSwiftPackageReference "SlideKit" */;

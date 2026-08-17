@@ -2,10 +2,11 @@ import SwiftUI
 
 struct TitleSlide: View {
   var text: String
+  var size: CGFloat = 160
 
   var body: some View {
     Text(text)
-      .font(.system(size: 160, weight: .bold, design: .default))
+      .font(.system(size: size, weight: .bold, design: .default))
       .foregroundColor(.primary)
       .multilineTextAlignment(.center)
   }

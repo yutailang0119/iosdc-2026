@@ -21,7 +21,6 @@ struct CoverSlide: View {
             """
           )
           .font(.system(size: 120, weight: .bold, design: .default))
-          .foregroundColor(.primary)
           .multilineTextAlignment(.center)
         }
         VStack(spacing: 40) {

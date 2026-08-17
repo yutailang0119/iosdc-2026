@@ -7,7 +7,6 @@ struct TitleSlide: View {
   var body: some View {
     Text(text)
       .font(.system(size: size, weight: .bold, design: .default))
-      .foregroundColor(.primary)
       .multilineTextAlignment(.center)
   }
 }

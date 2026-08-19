@@ -35,28 +35,29 @@ public final class BytebeatController {
     self.processedCount = 0
   }
 
-  public func toggle() throws {
-    if isPlaying {
-      engine.stop()
-      waveformTask?.cancel()
-      waveformTask = nil
-      isPlaying = false
-    } else {
-      try engine.start()
-      let stream = engine.waveform
-      waveformTask = Task { [weak self] in
-        for await snapshot in stream {
-          guard let self else { break }
-          guard self.engine.isRunning else {
-            self.isPlaying = false
-            self.waveformTask = nil
-            break
-          }
-          self.consume(snapshot)
+  public func play() throws {
+    guard !isPlaying else { return }
+    try engine.start()
+    let stream = engine.waveform
+    waveformTask = Task { [weak self] in
+      for await snapshot in stream {
+        guard let self else { break }
+        guard self.engine.isRunning else {
+          self.isPlaying = false
+          self.waveformTask = nil
+          break
         }
+        self.consume(snapshot)
       }
-      isPlaying = true
     }
+    isPlaying = true
+  }
+
+  public func stop() {
+    engine.stop()
+    waveformTask?.cancel()
+    waveformTask = nil
+    isPlaying = false
   }
 
   public func add(expression: String) throws {

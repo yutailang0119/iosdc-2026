@@ -7,21 +7,28 @@ public final class BytebeatController {
   private(set) var expressions: [Expression]
   private(set) var isPlaying: Bool
 
-  private let scopeColumnCount = 1024
-  private let samplesPerColumn = 32
+  private let scopeColumnCount: Int
+  private let samplesPerColumn: Int
   private(set) var scope: [ScopeColumn]
   private(set) var scopeCursor: Int
   private var scopeWritingColumn: Int
   private var processedCount: Int
   private var waveformTask: Task<Void, Never>?
 
-  public init() {
+  public init(
+    scopeColumnCount: Int = 1024,
+    samplesPerColumn: Int = 32
+  ) {
+    let scopeColumnCount = max(1, scopeColumnCount)
+    let samplesPerColumn = max(1, samplesPerColumn)
     self.engine = BytebeatEngine()
     self.expressions = []
     self.isPlaying = false
+    self.scopeColumnCount = scopeColumnCount
+    self.samplesPerColumn = samplesPerColumn
     self.scope = Array(
       repeating: ScopeColumn(min: 0, max: 0),
-      count: 1024
+      count: scopeColumnCount
     )
     self.scopeCursor = 0
     self.scopeWritingColumn = -1

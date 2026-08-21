@@ -6,12 +6,15 @@ struct CodeSlide: View {
 
   var body: some View {
     CenteringSlide {
-      Color.white
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(52)
-        .overlay {
-          Code(code, syntaxHighlighter: .presentation(fontSize: 36))
-        }
+      Code(code, syntaxHighlighter: .presentation(fontSize: 36))
+        .frame(
+          maxWidth: .infinity,
+          maxHeight: .infinity,
+          alignment: .topLeading
+        )
+        .padding()
+        .background(.white)
+        .padding()
     }
   }
 }

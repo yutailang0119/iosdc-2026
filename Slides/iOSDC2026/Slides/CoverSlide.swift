@@ -11,7 +11,7 @@ import SwiftUI
 @Slide
 struct CoverSlide: View {
   var body: some View {
-    CenteringSlide {
+    CenteringLayout {
       VStack(spacing: 100) {
         VStack {
           Text(

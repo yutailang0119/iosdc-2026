@@ -1,7 +1,7 @@
 import AVKit
 import SwiftUI
 
-struct VideoSlide: View {
+struct VideoLayout: View {
   @State private var player: AVPlayer
 
   init(url: URL) {
@@ -10,7 +10,6 @@ struct VideoSlide: View {
 
   var body: some View {
     VideoPlayer(player: player)
-      //      .frame(maxHeight: 810)
       .onAppear {
         player.play()
       }

@@ -11,7 +11,7 @@ import SwiftUI
 @Slide
 struct YutailangSlide: View {
   var body: some View {
-    SplitSlide {
+    SplitLayout {
       HeaderSlide("yutailang0119") {
         Item("株式会社はてな") {
           Item("京都オフィス")
@@ -37,7 +37,7 @@ struct YutailangSlide: View {
         Item("🐈🐈‍⬛")
       }
     } detail: {
-      CenteringSlide {
+      CenteringLayout {
         Image(.yutailang0119)
           .resizable()
           .scaledToFit()

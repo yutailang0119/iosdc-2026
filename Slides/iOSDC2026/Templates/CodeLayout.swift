@@ -16,6 +16,10 @@ struct CodeLayout: View {
     )
     .padding()
     .background(.white)
+    .overlay {
+      Rectangle()
+        .strokeBorder(.separator, lineWidth: 2)
+    }
     .padding()
   }
 }

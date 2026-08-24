@@ -5,20 +5,18 @@ struct CodeLayout: View {
   var code: String
 
   var body: some View {
-    CenteringLayout {
-      Code(
-        code,
-        syntaxHighlighter: .presentation(fontSize: 36)
-      )
-      .frame(
-        maxWidth: .infinity,
-        maxHeight: .infinity,
-        alignment: .topLeading
-      )
-      .padding()
-      .background(.white)
-      .padding()
-    }
+    Code(
+      code,
+      syntaxHighlighter: .presentation(fontSize: 36)
+    )
+    .frame(
+      maxWidth: .infinity,
+      maxHeight: .infinity,
+      alignment: .topLeading
+    )
+    .padding()
+    .background(.white)
+    .padding()
   }
 }
 

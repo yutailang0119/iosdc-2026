@@ -4,7 +4,6 @@ import SwiftUI
 @MainActor
 public final class BytebeatController {
   private let engine: BytebeatEngine
-  private(set) var expressions: [Expression]
   private(set) var isPlaying: Bool
 
   private let scopeColumnCount: Int
@@ -22,7 +21,6 @@ public final class BytebeatController {
     let scopeColumnCount = max(1, scopeColumnCount)
     let samplesPerColumn = max(1, samplesPerColumn)
     self.engine = BytebeatEngine()
-    self.expressions = []
     self.isPlaying = false
     self.scopeColumnCount = scopeColumnCount
     self.samplesPerColumn = samplesPerColumn
@@ -35,7 +33,12 @@ public final class BytebeatController {
     self.processedCount = 0
   }
 
-  public func play() throws {
+  public func play(expression: String) throws {
+    let evaluator = try NativeBytebeatEvaluator(
+      expression: expression
+    )
+    engine.setEvaluator(evaluator)
+
     guard !isPlaying else { return }
     try engine.start()
     let stream = engine.waveform
@@ -59,35 +62,9 @@ public final class BytebeatController {
     waveformTask = nil
     isPlaying = false
   }
-
-  public func add(expression: String) throws {
-    let evaluator = try NativeBytebeatEvaluator(
-      expression: expression
-    )
-    expressions.append(
-      Expression(raw: expression, evaluator: evaluator)
-    )
-    engine.setEvaluators(expressions.map(\.evaluator))
-  }
-
-  public func remove(at offsets: IndexSet) {
-    expressions.remove(atOffsets: offsets)
-    engine.setEvaluators(expressions.map(\.evaluator))
-  }
-
-  public func removeAll() {
-    expressions.removeAll()
-    engine.setEvaluators(expressions.map(\.evaluator))
-  }
 }
 
 extension BytebeatController {
-  struct Expression: Identifiable {
-    let id = UUID()
-    var raw: String
-    var evaluator: any BytebeatEvaluator
-  }
-
   struct ScopeColumn {
     var min: Float
     var max: Float

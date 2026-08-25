@@ -37,8 +37,8 @@ package final class BytebeatEngine: @unchecked Sendable {
     engine.connect(source, to: engine.mainMixerNode, format: format)
   }
 
-  func setEvaluators(_ evaluators: [any BytebeatEvaluator]) {
-    dsp.setEvaluators(evaluators)
+  func setEvaluator(_ evaluator: any BytebeatEvaluator) {
+    dsp.setEvaluator(evaluator)
   }
 
   func start() throws {

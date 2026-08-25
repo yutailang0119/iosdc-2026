@@ -12,17 +12,17 @@ final class BytebeatMixer: @unchecked Sendable {
   }
 
   private struct Exchange {
-    var pending: [Voice]?
-    var retired: [Voice]?
+    var pending: Voice?
+    var retired: Voice?
   }
 
   private let exchange = Mutex<Exchange>(Exchange())
-  private var voices: [Voice] = []
+  private var voice: Voice?
 
-  func setEvaluators(_ evaluators: [any BytebeatEvaluator]) {
-    let voices = evaluators.map(Voice.init(evaluator:))
+  func setEvaluator(_ evaluator: any BytebeatEvaluator) {
+    let voice = Voice(evaluator: evaluator)
     exchange.withLock {
-      $0.pending = voices
+      $0.pending = voice
       $0.retired = nil
     }
   }
@@ -32,17 +32,14 @@ final class BytebeatMixer: @unchecked Sendable {
     exchange.withLockIfAvailable { exchange in
       guard let pending = exchange.pending else { return }
       exchange.pending = nil
-      exchange.retired = voices
-      voices = pending
+      exchange.retired = voice
+      voice = pending
     }
   }
 
   @inline(__always)
   func sample(t: UInt32) -> Float {
-    var mix: Float = 0
-    for voice in voices {
-      mix += voice.sample(t: t)
-    }
-    return mix / (1 + abs(mix))
+    guard let voice else { return 0 }
+    return voice.sample(t: t)
   }
 }

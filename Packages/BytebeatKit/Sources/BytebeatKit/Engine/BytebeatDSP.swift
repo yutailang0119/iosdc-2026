@@ -24,7 +24,7 @@ final class BytebeatDSP: @unchecked Sendable {
     return (mixer.sample(t: t), t != previous)
   }
 
-  func setEvaluators(_ evaluators: [any BytebeatEvaluator]) {
-    mixer.setEvaluators(evaluators)
+  func setEvaluator(_ evaluator: any BytebeatEvaluator) {
+    mixer.setEvaluator(evaluator)
   }
 }

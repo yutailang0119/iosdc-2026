@@ -7,7 +7,7 @@ struct CodeLayout: View {
   var body: some View {
     Code(
       code,
-      syntaxHighlighter: .presentation(fontSize: 36)
+      syntaxHighlighter: .presentation(fontSize: 32)
     )
     .frame(
       maxWidth: .infinity,

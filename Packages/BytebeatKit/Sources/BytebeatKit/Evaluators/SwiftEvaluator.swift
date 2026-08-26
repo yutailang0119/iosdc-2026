@@ -1,6 +1,6 @@
 import Foundation
 
-package struct NativeBytebeatEvaluator: Sendable, BytebeatEvaluator {
+package struct SwiftEvaluator: Sendable, BytebeatEvaluator {
   private let root: Expression
 
   package init(expression: String) throws {
@@ -16,7 +16,7 @@ package struct NativeBytebeatEvaluator: Sendable, BytebeatEvaluator {
 
 // MARK: - Expression tree
 
-extension NativeBytebeatEvaluator {
+extension SwiftEvaluator {
   indirect enum Expression: Sendable {
     case number(Double)
     case time
@@ -76,7 +76,7 @@ extension NativeBytebeatEvaluator {
 
 // MARK: - Operators
 
-extension NativeBytebeatEvaluator {
+extension SwiftEvaluator {
   enum UnaryOperator: Sendable {
     case negate
     case plus
@@ -148,7 +148,7 @@ extension NativeBytebeatEvaluator {
 
 // MARK: - Built-in Math functions
 
-extension NativeBytebeatEvaluator {
+extension SwiftEvaluator {
   enum BuiltinFunction: String, Sendable {
     case sin
     case cos
@@ -235,7 +235,7 @@ extension NativeBytebeatEvaluator {
 
 // MARK: - Parsing
 
-extension NativeBytebeatEvaluator {
+extension SwiftEvaluator {
   enum ParseError: Error, CustomStringConvertible {
     case unexpectedCharacter(Character)
     case invalidNumber(String)

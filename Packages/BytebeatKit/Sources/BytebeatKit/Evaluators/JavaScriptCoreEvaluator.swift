@@ -1,6 +1,6 @@
 import JavaScriptCore
 
-package struct JavaScriptBytebeatEvaluator: @unchecked Sendable, BytebeatEvaluator {
+package struct JavaScriptCoreEvaluator: @unchecked Sendable, BytebeatEvaluator {
   private let context: JSContext
   private let function: JSValue
 
@@ -45,7 +45,7 @@ package struct JavaScriptBytebeatEvaluator: @unchecked Sendable, BytebeatEvaluat
   }
 }
 
-extension JavaScriptBytebeatEvaluator {
+extension JavaScriptCoreEvaluator {
   enum JavaScriptError: Error {
     case contextCreationFailed
     case undefinedIdentifier(name: String)

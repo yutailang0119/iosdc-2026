@@ -2,7 +2,7 @@ import Testing
 
 @testable import BytebeatKit
 
-struct NativeBytebeatEvaluatorTests {
+struct SwiftEvaluatorTests {
   @Test(
     arguments: [
       ("1+2*3", 7),
@@ -58,7 +58,7 @@ struct NativeBytebeatEvaluatorTests {
     ] as [(String, UInt8)]
   )
   func evaluatesConstantExpression(_ testCase: (String, UInt8)) throws {
-    let evaluator = try NativeBytebeatEvaluator(expression: testCase.0)
+    let evaluator = try SwiftEvaluator(expression: testCase.0)
     #expect(evaluator.evaluate(t: 0) == testCase.1)
   }
 
@@ -72,27 +72,27 @@ struct NativeBytebeatEvaluatorTests {
     ] as [(String, UInt32, UInt8)]
   )
   func evaluatesTimeDependentExpression(_ testCase: (String, UInt32, UInt8)) throws {
-    let evaluator = try NativeBytebeatEvaluator(expression: testCase.0)
+    let evaluator = try SwiftEvaluator(expression: testCase.0)
     #expect(evaluator.evaluate(t: testCase.1) == testCase.2)
   }
 
   @Test func exponentiationIsRightAssociative() throws {
-    let evaluator = try NativeBytebeatEvaluator(expression: "2**1**2")
+    let evaluator = try SwiftEvaluator(expression: "2**1**2")
     #expect(evaluator.evaluate(t: 0) == 2)
   }
 
   @Test func exponentiationBindsTighterThanMultiplication() throws {
-    let evaluator = try NativeBytebeatEvaluator(expression: "t*t**2")
+    let evaluator = try SwiftEvaluator(expression: "t*t**2")
     #expect(evaluator.evaluate(t: 3) == 27)
   }
 
   @Test func exponentiationAcceptsUnaryExponent() throws {
-    let evaluator = try NativeBytebeatEvaluator(expression: "2**-1")
+    let evaluator = try SwiftEvaluator(expression: "2**-1")
     #expect(evaluator.evaluate(t: 0) == 0)
   }
 
   @Test func exponentiationAcceptsParenthesizedUnaryBase() throws {
-    let evaluator = try NativeBytebeatEvaluator(expression: "(-2)**2")
+    let evaluator = try SwiftEvaluator(expression: "(-2)**2")
     #expect(evaluator.evaluate(t: 0) == 4)
   }
 
@@ -111,11 +111,11 @@ struct NativeBytebeatEvaluatorTests {
       "(t>>10&1&&(t>>12&3)<3)?t>>4:t*(t>>9&1?3:5)&t>>(t>>11&1?4:6)",
     ]
   )
-  func matchesJavaScriptBytebeatEvaluator(expression: String) throws {
-    let native = try NativeBytebeatEvaluator(expression: expression)
-    let javaScript = try JavaScriptBytebeatEvaluator(expression: expression)
+  func matchesJavaScriptCoreEvaluator(expression: String) throws {
+    let swift = try SwiftEvaluator(expression: expression)
+    let javaScriptCore = try JavaScriptCoreEvaluator(expression: expression)
     for t in stride(from: UInt32(0), to: 65536, by: 127) {
-      #expect(native.evaluate(t: t) == javaScript.evaluate(t: t), "t=\(t)")
+      #expect(swift.evaluate(t: t) == javaScriptCore.evaluate(t: t), "t=\(t)")
     }
   }
 
@@ -135,7 +135,7 @@ struct NativeBytebeatEvaluatorTests {
   )
   func rejectsInvalidExpression(_ expression: String) {
     #expect(throws: (any Error).self) {
-      _ = try NativeBytebeatEvaluator(expression: expression)
+      _ = try SwiftEvaluator(expression: expression)
     }
   }
 }

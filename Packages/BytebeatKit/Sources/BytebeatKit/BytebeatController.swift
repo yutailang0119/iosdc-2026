@@ -34,7 +34,7 @@ public final class BytebeatController {
   }
 
   public func play(expression: String) throws {
-    let evaluator = try NativeBytebeatEvaluator(
+    let evaluator = try SwiftEvaluator(
       expression: expression
     )
     engine.setEvaluator(evaluator)

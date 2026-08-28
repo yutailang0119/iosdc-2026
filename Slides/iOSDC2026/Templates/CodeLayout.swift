@@ -15,11 +15,12 @@ struct CodeLayout: View {
       alignment: .topLeading
     )
     .padding()
-    .background(.white)
+    .background(Color.presentation)
     .overlay {
       Rectangle()
         .strokeBorder(.separator, lineWidth: 2)
     }
+    .environment(\.colorScheme, .light)
     .padding()
   }
 }

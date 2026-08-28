@@ -26,11 +26,11 @@ struct CoverSlide: View {
         VStack(spacing: 40) {
           Text("Yutaro Muta @yutailang0119")
             .font(.system(size: 80, weight: .bold, design: .default))
-            .foregroundColor(.accentColor)
+            .foregroundStyle(.tint)
           VStack(spacing: 20) {
             Text("2026/09/13 15:30〜 iOSDC Japan 2026")
               .font(.system(size: 60, weight: .medium, design: .default))
-              .foregroundColor(.secondary)
+              .foregroundStyle(.secondary)
             Link(
               destination: URL(
                 string: "https://fortee.jp/iosdc-japan-2026/proposal/60b58d12-61d2-4b0b-a06b-3397f4452b1d"

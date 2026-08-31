@@ -52,6 +52,13 @@ struct CoverSlide: View {
   var shouldHideIndex: Bool {
     true
   }
+
+  var script: String {
+    """
+    よろしくお願いします
+    1行の式と音の話をします
+    """
+  }
 }
 
 #Preview {

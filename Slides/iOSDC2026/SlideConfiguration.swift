@@ -17,5 +17,30 @@ struct SlideConfiguration {
   let slideIndexController = SlideIndexController {
     CoverSlide()
     YutailangSlide()
+    IntroductionExpressionSoundSlide()
+
+    AboutTitleSlide()
+    AboutSlide()
+
+    ExampleExpressionTitleSlide()
+    ExampleExpressionSlide()
+    ExampleExpressionSoundSlide()
+
+    ImplementationTitleSlide()
+    ImplementationSlide()
+
+    SourceNodeTitleSlide()
+    SourceNodeSlide()
+    ResamplingSlide()
+
+    EvaluatorTitleSlide()
+    JavaScriptCoreSlide()
+    SwiftEvaluatorSlide()
+
+    ExchangeTitleSlide()
+    ExchangeSlide()
+
+    ConclusionTitleSlide()
+    ConclusionSlide()
   }
 }

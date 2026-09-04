@@ -38,7 +38,6 @@ struct CoverSlide: View {
             ) {
               Text("https://fortee.jp/iosdc-japan-2026/proposal/60b58d12-61d2-4b0b-a06b-3397f4452b1d")
                 .multilineTextAlignment(.center)
-                .underline()
             }
             .font(.system(size: 32, weight: .medium, design: .default))
             .underline()

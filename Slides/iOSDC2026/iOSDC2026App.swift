@@ -31,7 +31,8 @@ struct iOSDC2026App: App {
       NSWorkspace.shared.open(URL(string: "iOSDC2026://editor")!)
     }
     .addPDFExportCommands(
-      for: presentationContentView,
+      for: presentationContentView
+        .environment(\.isSoundEnabled, false),
       with: Self.configuration.slideIndexController,
       size: Self.configuration.size
     )
@@ -42,6 +43,7 @@ struct iOSDC2026App: App {
         slideIndexController: Self.configuration.slideIndexController
       ) {
         presentationContentView
+          .environment(\.isSoundEnabled, false)
       }
     }
     .setupAsPresenterWindow()

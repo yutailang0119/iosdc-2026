@@ -22,6 +22,7 @@ struct IntroductionExpressionSoundSlide: View {
     }
   }
 
+  @Environment(\.isSoundEnabled) private var isSoundEnabled: Bool
   @Phase var phase: SlidePhasedState
   @State private var controller = BytebeatController(
     scopeColumnCount: 512,
@@ -41,6 +42,7 @@ struct IntroductionExpressionSoundSlide: View {
       }
       .background(.background)
       .onChange(of: phase) { _, newValue in
+        guard isSoundEnabled else { return }
         do {
           switch newValue {
           case .initial:

@@ -42,5 +42,7 @@ struct SlideConfiguration {
 
     ConclusionTitleSlide()
     ConclusionSlide()
+
+    ImprintSlide()
   }
 }

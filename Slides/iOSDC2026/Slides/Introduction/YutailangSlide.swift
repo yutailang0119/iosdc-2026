@@ -13,7 +13,16 @@ struct YutailangSlide: View {
   var body: some View {
     SplitLayout {
       HeaderSlide("yutailang0119") {
-        Item("株式会社はてな") {
+        Item {
+          Label {
+            Text("株式会社はてな")
+          } icon: {
+            Image(.hatena)
+              .resizable()
+              .scaledToFit()
+              .frame(width: 52, height: 52)
+          }
+        } child: {
           Item("京都オフィス")
           Item("アプリケーションエンジニア")
         }

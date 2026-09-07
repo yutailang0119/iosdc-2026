@@ -15,12 +15,14 @@ struct ImplementationSlide: View {
       Item("t を進めながらサンプルを返す") {
         Item("AVAudioSourceNode")
       }
-      Item("JavaScriptの式を評価する") {
-        Item("JavaScriptCore → JavaScriptCoreEvaluator")
-        Item("Swift製の互換評価器 → SwiftEvaluator")
-      }
-      Item("オーディオスレッドを止めずに、式を差し替える") {
-        Item("Mutex.withLockIfAvailable")
+      Item("式は実行時の文字列") {
+        Item("JavaScriptの式を評価する") {
+          Item("JavaScriptCore → JavaScriptCoreEvaluator")
+          Item("Swift製の互換評価器 → SwiftEvaluator")
+        }
+        Item("オーディオスレッドを止めずに、式を差し替える") {
+          Item("Mutex.withLockIfAvailable")
+        }
       }
     }
     .background(.background)
@@ -28,12 +30,14 @@ struct ImplementationSlide: View {
 
   var script: String {
     """
-    Swiftでの実装を見ていきます
-    ポイントは3つ
-    まず、t を進めながらサンプルを返すこと
-    次に、Bytebeatの式はJavaScriptなので、互換の評価器が必要になること
-    最後に、式の差し替え時にオーディオスレッドを止めないこと
-    順に見ていきます
+    実装のポイントは2つ
+    まず「t の関数」という性質
+
+    もう一点は、「式はコンパイル済みのコードではなく、実行時の文字列」ということです
+    再生中に文字を変えて音が変わるのは、この性質によるものです
+
+    サンプルを返す処理は、オーディオスレッドで動きます
+    再生は待ってくれないので、間に合わなければ音が途切れます
     """
   }
 }

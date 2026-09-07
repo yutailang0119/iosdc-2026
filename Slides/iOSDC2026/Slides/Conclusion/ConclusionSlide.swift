@@ -12,11 +12,12 @@ import SwiftUI
 struct ConclusionSlide: View {
   var body: some View {
     HeaderSlide("Conclusion") {
-      Item("1行の式と標準フレームワークだけで音楽が鳴る")
-      Item("Swift実装のポイント") {
-        Item("AVAudioSourceNode で t を進めながらサンプルを返す")
-        Item("式の評価は JavaScriptCore、オーディオスレッドでは自前")
-        Item("Mutex.withLockIfAvailable で待たずに差し替える")
+      Item("1行の式がそのまま音楽になる") {
+        Item("1文字変えれば音が変わる")
+        Item("1項足せば音が重なる")
+      }
+      Item("Swiftなら標準フレームワークだけで書ける") {
+        Item("なめらかな音のために、再生に間に合わせることだけが重要")
       }
       Item {
         Label {
@@ -39,9 +40,12 @@ struct ConclusionSlide: View {
 
   var script: String {
     """
-    1行の式と標準フレームワークだけで、音楽が鳴りました
-    ポイントは3つ
-    AVAudioSourceNodeでサンプルを返すこと、式を評価すること、待たずに差し替えること
+    1行の式が、そのまま音楽になりました
+    1文字変えれば音が変わり、1項足せば音が重なります
+
+    Swiftでも、標準フレームワークだけで書けます
+    なめらかな音のために、再生に間に合わせることだけが重要です
+
     コードはこのリポジトリにあります
     ぜひ手元で式を変えて遊んでみてください
     """

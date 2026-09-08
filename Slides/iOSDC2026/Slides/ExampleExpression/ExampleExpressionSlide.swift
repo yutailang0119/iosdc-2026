@@ -67,7 +67,7 @@ struct ExampleExpressionSlide: View {
       """
     case .tempo:
       """
-      t>>10 がテンポです
+      t を10ビット右にシフトした部分がテンポです
       1,024サンプル、0.128秒ごとに1つ進むカウンタになります
       """
     case .scale:

@@ -18,6 +18,7 @@ struct ConclusionSlide: View {
       }
       Item("Swiftなら標準フレームワークだけで書ける") {
         Item("なめらかな音のために、再生に間に合わせることだけが重要")
+        Item("JavaScript互換のEvaluatorを自作")
       }
       Item {
         Label {
@@ -45,6 +46,7 @@ struct ConclusionSlide: View {
 
     Swiftでも、標準フレームワークだけで書けます
     なめらかな音のために、再生に間に合わせることだけが重要です
+    ただ、JavaScriptCoreが間に合わないので、Evaluatorも自作しました
 
     コードはこのリポジトリにあります
     ぜひ手元で式を変えて遊んでみてください

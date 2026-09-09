@@ -13,37 +13,6 @@ import SwiftUI
 struct ExampleExpressionSoundSlide: View {
   enum SlidePhasedState: Int, PhasedState {
     case initial, second, third, fourth
-
-    private var segments: (head: String, accent: String, tail: String) {
-      switch self {
-      case .initial, .second: ("t*(42", "&", "t>>10)")
-      case .third: ("t*(42", "^", "t>>10)")
-      case .fourth: ("t*(42&t>>10)", "+t*(42&t>>11)", "")
-      }
-    }
-
-    var expression: String {
-      segments.head + segments.accent + segments.tail
-    }
-
-    var size: CGFloat {
-      switch self {
-      case .initial, .second, .third: 160
-      case .fourth: 136
-      }
-    }
-
-    var text: Text {
-      let (head, accent, tail) = segments
-      switch self {
-      case .initial:
-        return Text("\(head)\(Text(accent))\(tail)")
-          .foregroundStyle(.tertiary)
-      case .second, .third, .fourth:
-        return Text("\(head)\(Text(accent).foregroundStyle(.yellow))\(tail)")
-          .foregroundStyle(.primary)
-      }
-    }
   }
 
   @Environment(\.isSoundEnabled) private var isSoundEnabled: Bool
@@ -107,6 +76,39 @@ struct ExampleExpressionSoundSlide: View {
       8bitなので足し算は折り返します、混ぜるのではなく算術です
       tの式として評価できれば、音になります
       """
+    }
+  }
+}
+
+private extension ExampleExpressionSoundSlide.SlidePhasedState {
+  private var segments: (head: String, accent: String, tail: String) {
+    switch self {
+    case .initial, .second: ("t*(42", "&", "t>>10)")
+    case .third: ("t*(42", "^", "t>>10)")
+    case .fourth: ("t*(42&t>>10)", "+t*(42&t>>11)", "")
+    }
+  }
+
+  var expression: String {
+    segments.head + segments.accent + segments.tail
+  }
+
+  var size: CGFloat {
+    switch self {
+    case .initial, .second, .third: 160
+    case .fourth: 136
+    }
+  }
+
+  var text: Text {
+    let (head, accent, tail) = segments
+    switch self {
+    case .initial:
+      return Text("\(head)\(Text(accent))\(tail)")
+        .foregroundStyle(.tertiary)
+    case .second, .third, .fourth:
+      return Text("\(head)\(Text(accent).foregroundStyle(.yellow))\(tail)")
+        .foregroundStyle(.primary)
     }
   }
 }

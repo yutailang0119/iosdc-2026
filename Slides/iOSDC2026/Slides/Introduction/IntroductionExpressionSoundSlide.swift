@@ -13,13 +13,6 @@ import SwiftUI
 struct IntroductionExpressionSoundSlide: View {
   enum SlidePhasedState: Int, PhasedState {
     case initial, second
-
-    var foregroundStyle: HierarchicalShapeStyle {
-      switch self {
-      case .initial: .tertiary
-      case .second: .primary
-      }
-    }
   }
 
   @Environment(\.isSoundEnabled) private var isSoundEnabled: Bool
@@ -71,6 +64,15 @@ struct IntroductionExpressionSoundSlide: View {
       シンセも音源ファイルも使っていません
       スライド背景に表示している波形も、この式が作った音を表現しています
       """
+    }
+  }
+}
+
+private extension IntroductionExpressionSoundSlide.SlidePhasedState {
+  var foregroundStyle: HierarchicalShapeStyle {
+    switch self {
+    case .initial: .tertiary
+    case .second: .primary
     }
   }
 }

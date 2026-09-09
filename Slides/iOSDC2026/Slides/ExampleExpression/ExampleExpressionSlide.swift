@@ -12,24 +12,6 @@ import SwiftUI
 struct ExampleExpressionSlide: View {
   enum SlidePhasedState: Int, PhasedState {
     case initial, tempo, scale, pitch
-
-    var baseStyle: HierarchicalShapeStyle {
-      self == .initial ? .primary : .tertiary
-    }
-
-    var expression: Text {
-      let pitchText = fragment("t*", .pitch)
-      let scaleText = fragment("42&", .scale)
-      let tempoText = fragment("t>>10", .tempo)
-      return Text("\(pitchText)(\(scaleText)\(tempoText))")
-    }
-
-    func style(for target: Self) -> HierarchicalShapeStyle {
-      guard self != .initial else {
-        return .primary
-      }
-      return self == target ? .primary : .tertiary
-    }
   }
 
   @Phase var phase: SlidePhasedState
@@ -87,6 +69,24 @@ struct ExampleExpressionSlide: View {
 }
 
 private extension ExampleExpressionSlide.SlidePhasedState {
+  var baseStyle: HierarchicalShapeStyle {
+    self == .initial ? .primary : .tertiary
+  }
+
+  var expression: Text {
+    let pitchText = fragment("t*", .pitch)
+    let scaleText = fragment("42&", .scale)
+    let tempoText = fragment("t>>10", .tempo)
+    return Text("\(pitchText)(\(scaleText)\(tempoText))")
+  }
+
+  func style(for target: Self) -> HierarchicalShapeStyle {
+    guard self != .initial else {
+      return .primary
+    }
+    return self == target ? .primary : .tertiary
+  }
+
   func fragment(_ string: String, _ target: Self) -> Text {
     self == target
       ? Text(string).foregroundStyle(.primary)

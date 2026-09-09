@@ -157,6 +157,10 @@ struct SwiftEvaluatorTests {
       "a=1,b",
       "a+=1",
       "a*=2,a=1",
+      "t++",
+      "--t",
+      "a=1,a++ +2",
+      "t--1",
     ]
   )
   func rejectsInvalidExpression(_ expression: String) {

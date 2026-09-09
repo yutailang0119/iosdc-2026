@@ -2,7 +2,7 @@
 //  ImprintSlide.swift
 //  iOSDC2026
 //
-//  Created by Yutaro Muta on 2025/09/07.
+//  Created by Yutaro Muta on 2026/09/07.
 //
 
 import BytebeatKit

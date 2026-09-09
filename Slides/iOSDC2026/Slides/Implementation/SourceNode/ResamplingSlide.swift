@@ -19,8 +19,8 @@ struct ResamplingSlide: View {
 
   private var code: String {
     """
-    let format = engine.outputNode.outputFormat(forBus: 0)
-    let sampleRate = format.sampleRate
+    let sampleRate = engine.outputNode.outputFormat(forBus: 0)
+      .sampleRate
 
     let ratio = 8000.0 / sampleRate
     let step = UInt64(ratio * Double(UInt64(1) << 32))

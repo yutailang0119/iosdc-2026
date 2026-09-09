@@ -55,6 +55,20 @@ struct SwiftEvaluatorTests {
       ("Math.imul(3,5)", 15),
       ("Math.clz32(1)", 31),
       ("Math.fround(0.5)", 0),
+      ("a=5", 5),
+      ("a=5,a*2", 10),
+      ("a=5,a+=1", 6),
+      ("a=7,a%=4", 3),
+      ("a=2,a**=3", 8),
+      ("a=1,a<<=4", 16),
+      ("a=-1,a>>>=28", 15),
+      ("a=12,a&=10", 8),
+      ("a=12,a|=3", 15),
+      ("a=12,a^=10", 6),
+      ("a=5,b=3,a*b", 15),
+      ("a=b=4,a+b", 8),
+      ("t=9,t", 9),
+      ("(a)=6,a", 6),
     ] as [(String, UInt8)]
   )
   func evaluatesConstantExpression(_ testCase: (String, UInt8)) throws {
@@ -69,6 +83,8 @@ struct SwiftEvaluatorTests {
       ("t?7:9", 3, 7),
       ("t>>>4", 255, 15),
       ("t*(42&t>>10)", 4000, 64),
+      ("t%=256,t", 300, 44),
+      ("a=t>>4,a*a", 64, 16),
     ] as [(String, UInt32, UInt8)]
   )
   func evaluatesTimeDependentExpression(_ testCase: (String, UInt32, UInt8)) throws {
@@ -109,6 +125,10 @@ struct SwiftEvaluatorTests {
       "128+127*Math.tanh(t/9999)",
       "Math.imul(t,3)&255",
       "(t>>10&1&&(t>>12&3)<3)?t>>4:t*(t>>9&1?3:5)&t>>(t>>11&1?4:6)",
+      "t%=4096,t*(t>>5|t>>8)",
+      "a=t>>6,b=t>>8,t*(a^b)&127",
+      "a=t,a%=64,a*4",
+      "t=t>>1,t*3&t>>5",
     ]
   )
   func matchesJavaScriptCoreEvaluator(expression: String) throws {
@@ -131,11 +151,25 @@ struct SwiftEvaluatorTests {
       "1..2",
       "0x",
       "-2**2",
+      "5=t",
+      "t+1=2",
+      "Math.PI=3",
+      "a=1,b",
+      "a+=1",
+      "a*=2,a=1",
     ]
   )
   func rejectsInvalidExpression(_ expression: String) {
     #expect(throws: (any Error).self) {
       _ = try SwiftEvaluator(expression: expression)
+    }
+  }
+
+  @Test func reportsFirstUnknownIdentifier() {
+    #expect {
+      _ = try SwiftEvaluator(expression: "x+y")
+    } throws: { error in
+      String(describing: error) == "Unknown identifier 'x'."
     }
   }
 }

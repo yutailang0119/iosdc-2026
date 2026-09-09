@@ -2,15 +2,21 @@ import Foundation
 
 package struct SwiftEvaluator: Sendable, BytebeatEvaluator {
   private let root: Expression
+  private let slotCount: Int
 
   package init(expression: String) throws {
     var parser = try Parser(source: expression)
     self.root = try parser.parse()
+    self.slotCount = parser.slotCount
   }
 
   package func evaluate(t: UInt32) -> UInt8 {
-    let value = root.evaluate(t: Double(t))
-    return UInt8(truncatingIfNeeded: value.jsInt32)
+    withUnsafeTemporaryAllocation(of: Double.self, capacity: slotCount) { slots in
+      slots.initialize(repeating: .nan)
+      slots[0] = Double(t)
+      let value = root.evaluate(slots: slots)
+      return UInt8(truncatingIfNeeded: value.jsInt32)
+    }
   }
 }
 
@@ -19,7 +25,8 @@ package struct SwiftEvaluator: Sendable, BytebeatEvaluator {
 extension SwiftEvaluator {
   indirect enum Expression: Sendable {
     case number(Double)
-    case time
+    case variable(Int)
+    case assign(slot: Int, operation: BinaryOperator?, value: Expression)
     case unary(UnaryOperator, Expression)
     case binary(BinaryOperator, Expression, Expression)
     case ternary(condition: Expression, then: Expression, else: Expression)
@@ -27,39 +34,49 @@ extension SwiftEvaluator {
     case array([Expression])
     case element(array: Expression, index: Expression)
 
-    func evaluate(t: Double) -> Double {
+    func evaluate(slots: UnsafeMutableBufferPointer<Double>) -> Double {
       switch self {
       case let .number(value):
         return value
-      case .time:
-        return t
+      case let .variable(slot):
+        return slots[slot]
+      case let .assign(slot, operation, value):
+        let result: Double
+        if let operation {
+          let current = slots[slot]
+          result = operation.apply(current, value.evaluate(slots: slots))
+        } else {
+          result = value.evaluate(slots: slots)
+        }
+        slots[slot] = result
+        return result
       case let .unary(op, operand):
-        return op.apply(operand.evaluate(t: t))
+        return op.apply(operand.evaluate(slots: slots))
       case let .binary(op, lhs, rhs):
         switch op {
         case .logicalAnd:
-          let left = lhs.evaluate(t: t)
-          return left.isJSTruthy ? rhs.evaluate(t: t) : left
+          let left = lhs.evaluate(slots: slots)
+          return left.isJSTruthy ? rhs.evaluate(slots: slots) : left
         case .logicalOr:
-          let left = lhs.evaluate(t: t)
-          return left.isJSTruthy ? left : rhs.evaluate(t: t)
+          let left = lhs.evaluate(slots: slots)
+          return left.isJSTruthy ? left : rhs.evaluate(slots: slots)
         default:
-          return op.apply(lhs.evaluate(t: t), rhs.evaluate(t: t))
+          return op.apply(lhs.evaluate(slots: slots), rhs.evaluate(slots: slots))
         }
       case let .ternary(condition, then, alternative):
-        return condition.evaluate(t: t).isJSTruthy
-          ? then.evaluate(t: t)
-          : alternative.evaluate(t: t)
+        return condition.evaluate(slots: slots).isJSTruthy
+          ? then.evaluate(slots: slots)
+          : alternative.evaluate(slots: slots)
       case let .call(function, arguments):
-        return function.apply(arguments.map { $0.evaluate(t: t) })
+        return function.apply(arguments.map { $0.evaluate(slots: slots) })
       case let .array(elements):
         return switch elements.count {
         case 0: 0
-        case 1: elements[0].evaluate(t: t)
+        case 1: elements[0].evaluate(slots: slots)
         default: .nan
         }
       case let .element(array, index):
-        let key = index.evaluate(t: t)
+        let key = index.evaluate(slots: slots)
         guard case let .array(elements) = array,
           key >= 0,
           key == key.rounded(.towardZero),
@@ -68,7 +85,7 @@ extension SwiftEvaluator {
         else {
           return .nan
         }
-        return elements[i].evaluate(t: t)
+        return elements[i].evaluate(slots: slots)
       }
     }
   }
@@ -243,6 +260,7 @@ extension SwiftEvaluator {
     case unexpectedEnd
     case expected(String)
     case unknownIdentifier(String)
+    case invalidAssignmentTarget
 
     var description: String {
       switch self {
@@ -258,6 +276,8 @@ extension SwiftEvaluator {
         return "Expected '\(text)'."
       case let .unknownIdentifier(name):
         return "Unknown identifier '\(name)'."
+      case .invalidAssignmentTarget:
+        return "Invalid assignment target."
       }
     }
   }
@@ -271,6 +291,13 @@ extension SwiftEvaluator {
   private struct Parser {
     private let tokens: [Token]
     private var position = 0
+    private var variableNames = ["t"]
+    private var variableSlots = ["t": 0]
+    private var assignedSlots: Set<Int> = [0]
+
+    var slotCount: Int {
+      variableNames.count
+    }
 
     init(source: String) throws {
       self.tokens = try Parser.tokenize(source)
@@ -284,9 +311,13 @@ extension SwiftEvaluator {
       let count = characters.count
       var index = 0
 
-      let threeCharSymbols = [">>>", "===", "!=="]
-      let twoCharSymbols = ["<<", ">>", "<=", ">=", "==", "!=", "&&", "||", "**"]
-      let oneCharSymbols = Set("+-*/%&|^~<>!?:(),.[]")
+      let fourCharSymbols = [">>>="]
+      let threeCharSymbols = [">>>", "===", "!==", "**=", "<<=", ">>="]
+      let twoCharSymbols = [
+        "<<", ">>", "<=", ">=", "==", "!=", "&&", "||", "**",
+        "+=", "-=", "*=", "/=", "%=", "&=", "|=", "^=",
+      ]
+      let oneCharSymbols = Set("+-*/%&|^~<>!?:(),.[]=")
 
       func matches(_ symbol: String, at start: Int) -> Bool {
         let length = symbol.count
@@ -365,6 +396,11 @@ extension SwiftEvaluator {
           continue
         }
 
+        if let symbol = fourCharSymbols.first(where: { matches($0, at: index) }) {
+          tokens.append(.symbol(symbol))
+          index += 4
+          continue
+        }
         if let symbol = threeCharSymbols.first(where: { matches($0, at: index) }) {
           tokens.append(.symbol(symbol))
           index += 3
@@ -427,6 +463,9 @@ extension SwiftEvaluator {
       if let token = peek() {
         throw ParseError.unexpectedToken(Parser.describe(token))
       }
+      if let slot = (0..<variableNames.count).first(where: { !assignedSlots.contains($0) }) {
+        throw ParseError.unknownIdentifier(variableNames[slot])
+      }
       return expression
     }
 
@@ -440,15 +479,52 @@ extension SwiftEvaluator {
     }
 
     private mutating func parseExpression() throws -> Expression {
-      try parseTernary()
+      try parseAssignment()
+    }
+
+    private static let assignmentOperators: [String: BinaryOperator?] = [
+      "=": nil,
+      "+=": .add,
+      "-=": .subtract,
+      "*=": .multiply,
+      "/=": .divide,
+      "%=": .remainder,
+      "**=": .exponent,
+      "<<=": .shiftLeft,
+      ">>=": .shiftRight,
+      ">>>=": .unsignedShiftRight,
+      "&=": .bitwiseAnd,
+      "|=": .bitwiseOr,
+      "^=": .bitwiseXor,
+    ]
+
+    private mutating func parseAssignment() throws -> Expression {
+      let target = try parseTernary()
+      guard case let .symbol(symbol)? = peek(),
+        let operation = Parser.assignmentOperators[symbol]
+      else {
+        return target
+      }
+      guard case let .variable(slot) = target else {
+        throw ParseError.invalidAssignmentTarget
+      }
+      if operation != nil,
+        !assignedSlots.contains(slot)
+      {
+        throw ParseError.unknownIdentifier(variableNames[slot])
+      }
+      position += 1
+      let value = try parseAssignment()
+      assignedSlots.insert(slot)
+      return .assign(slot: slot, operation: operation, value: value)
     }
 
     private mutating func parseTernary() throws -> Expression {
       let condition = try parseLogicalOr()
       guard consume(symbol: "?") else { return condition }
-      let then = try parseTernary()
+      let then = try parseExpression()
       try expect(symbol: ":")
-      let alternative = try parseTernary()
+      let alternative = try parseExpression()
       return .ternary(condition: condition, then: then, else: alternative)
     }
 
@@ -569,12 +645,19 @@ extension SwiftEvaluator {
       return expression
     }
 
-    private mutating func parseIdentifier(_ name: String) throws -> Expression {
-      if name == "t" {
-        return .time
+    private mutating func slot(for name: String) -> Int {
+      if let existing = variableSlots[name] {
+        return existing
       }
+      let slot = variableNames.count
+      variableNames.append(name)
+      variableSlots[name] = slot
+      return slot
+    }
+
+    private mutating func parseIdentifier(_ name: String) throws -> Expression {
       guard name == "Math" else {
-        throw ParseError.unknownIdentifier(name)
+        return .variable(slot(for: name))
       }
       try expect(symbol: ".")
       guard case let .identifier(member)? = peek() else {

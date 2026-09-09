@@ -12,7 +12,7 @@ import SwiftUI
 @Slide
 struct SoundCheckSlide: View {
   enum SlidePhasedState: Int, PhasedState {
-    case initial, pulse, baibai
+    case initial, pulse
   }
 
   @Environment(\.isSoundEnabled) private var isSoundEnabled: Bool
@@ -42,7 +42,7 @@ struct SoundCheckSlide: View {
         switch newValue {
         case .initial:
           controller.stop()
-        case .pulse, .baibai:
+        case .pulse:
           try controller.play(
             expression: newValue.expression
           )
@@ -66,7 +66,7 @@ private extension SoundCheckSlide.SlidePhasedState {
   var foregroundStyle: HierarchicalShapeStyle {
     switch self {
     case .initial: .tertiary
-    case .pulse, .baibai: .primary
+    case .pulse: .primary
     }
   }
 
@@ -76,8 +76,6 @@ private extension SoundCheckSlide.SlidePhasedState {
       ""
     case .pulse:
       "((t&4095)<800)*(t>>3&1)*(800-(t&4095))>>3"
-    case .baibai:
-      "((t*[0,1011,1135,1274,1350,1515,1701,2023][[112338,112338,6928082,45,262134,187227,7451785,18][t*3>>14&7]>>(t*3>>11&7)*3&7]>>6&255)+(t*([253,239,213,189,338,319,284,189][t*3>>14&7]<<(t*3>>12&1))>>7&127))*(~(t*3)&4095)>>13"
     }
   }
 }

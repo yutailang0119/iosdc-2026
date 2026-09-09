@@ -12,7 +12,7 @@ import SwiftUI
 @Slide
 struct ImprintSlide: View {
   enum SlidePhasedState: Int, PhasedState {
-    case initial, megalovania, silent
+    case initial, melody, silent
   }
 
   @Environment(\.isSoundEnabled) private var isSoundEnabled: Bool
@@ -31,9 +31,16 @@ struct ImprintSlide: View {
       }
       .font(.system(size: 160, weight: .bold, design: .default))
     }
-    .overlay(alignment: .topTrailing) {
-      Credit(phase: phase)
-        .padding(60)
+    .overlay(alignment: .bottom) {
+      switch phase {
+      case .initial:
+        EmptyView()
+      case .melody, .silent:
+        Text(phase.expression)
+          .font(.system(size: 24, design: .monospaced))
+          .foregroundStyle(.secondary)
+          .padding(60)
+      }
     }
     .background {
       WaveformView(
@@ -48,7 +55,7 @@ struct ImprintSlide: View {
         switch newValue {
         case .initial, .silent:
           controller.stop()
-        case .megalovania:
+        case .melody:
           try controller.play(expression: newValue.expression)
         }
       } catch {
@@ -66,14 +73,12 @@ struct ImprintSlide: View {
       """
       最後に1曲、1式だけ
       """
-    case .megalovania:
+    case .melody:
       """
-      かなり決め打ちになりますが、この有名な楽曲も音源ファイルやサンプルを使わずに再現可能です
-      この1行が、そのまま旋律になっています
+      音高を並べれば、こんな旋律も表現できます
       """
     case .silent:
       """
-      MEGALOVANIA、Toby Fox の楽曲でした
       ここまでお聴きいただき、ありがとうございました
       """
     }
@@ -86,39 +91,7 @@ struct ImprintSlide: View {
 
 private extension ImprintSlide.SlidePhasedState {
   var expression: String {
-    "(t*[601,601,1202,0,901,0,0,851,0,803,0,715,0,601,715,803][t>>10&15]>>6&255)*(~t&1023)>>10"
-  }
-}
-
-private extension ImprintSlide {
-  struct Credit: View {
-    var phase: SlidePhasedState
-
-    var body: some View {
-      switch phase {
-      case .initial:
-        EmptyView()
-      case .megalovania, .silent:
-        VStack(alignment: .trailing, spacing: 16) {
-          Text(phase.expression)
-            .font(.system(size: 24, design: .monospaced))
-          VStack(alignment: .trailing) {
-            Text("“MEGALOVANIA” composed by Toby Fox / UNDERTALE")
-            Text("Administered by Materia Music Publishing")
-            Link(
-              destination: URL(
-                string: "https://undertale.tumblr.com/post/139726155020/changing-policy-on-fan-merch"
-              )!
-            ) {
-              Text("https://undertale.tumblr.com/post/139726155020/changing-policy-on-fan-merch")
-            }
-            .underline()
-          }
-          .font(.system(size: 18))
-          .foregroundStyle(.secondary)
-        }
-      }
-    }
+    "(t*[601,900,1201,900,714,1070,1348,1070,601,802,1201,0,674,802,900,0][t>>10&15]>>6&255)*(~t&1023)>>10"
   }
 }
 

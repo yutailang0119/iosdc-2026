@@ -12,14 +12,14 @@ import SwiftUI
 @Slide
 struct ImprintSlide: View {
   enum SlidePhasedState: Int, PhasedState {
-    case initial, melody, silent
+    case initial, dora, silent
   }
 
   @Environment(\.isSoundEnabled) private var isSoundEnabled: Bool
   @Phase var phase: SlidePhasedState
   @State private var controller = BytebeatController(
     scopeColumnCount: 512,
-    samplesPerColumn: 32
+    samplesPerColumn: 1
   )
 
   var body: some View {
@@ -31,22 +31,24 @@ struct ImprintSlide: View {
       }
       .font(.system(size: 160, weight: .bold, design: .default))
     }
-    .overlay(alignment: .bottom) {
+    .background {
       switch phase {
       case .initial:
         EmptyView()
-      case .melody, .silent:
-        Text(phase.expression)
-          .font(.system(size: 24, design: .monospaced))
-          .foregroundStyle(.secondary)
-          .padding(60)
+      case .dora, .silent:
+        TitleLayout(
+          text: phase.expression,
+          size: 40
+        )
+        .foregroundStyle(.tertiary)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background {
+          WaveformView(
+            controller: controller,
+            style: .trace
+          )
+        }
       }
-    }
-    .background {
-      WaveformView(
-        controller: controller,
-        style: .trace
-      )
     }
     .background(.background)
     .onChange(of: phase) { _, newValue in
@@ -55,7 +57,7 @@ struct ImprintSlide: View {
         switch newValue {
         case .initial, .silent:
           controller.stop()
-        case .melody:
+        case .dora:
           try controller.play(expression: newValue.expression)
         }
       } catch {
@@ -71,11 +73,11 @@ struct ImprintSlide: View {
     switch phase {
     case .initial:
       """
-      最後に1曲、1式だけ
+      Enjoy Bytebeat
       """
-    case .melody:
+    case .dora:
       """
-      音高を並べれば、こんな旋律も表現できます
+      Enjoy iOSDC
       """
     case .silent:
       """
@@ -91,7 +93,7 @@ struct ImprintSlide: View {
 
 private extension ImprintSlide.SlidePhasedState {
   var expression: String {
-    "(t*[601,900,1201,900,714,1070,1348,1070,601,802,1201,0,674,802,900,0][t>>10&15]>>6&255)*(~t&1023)>>10"
+    "(128+(((((((((((((((((t<24064)?(24064-t):0))>>6)*((((t<24064)?(24064-t):0))>>6))>>8)*((t<64)?t:64))>>6)*(((((((t*466)>>6)^(-((((t*466)>>6)>>7)&1)))&127)-64)*34)+(((((((t*474)+2069)>>6)^(-(((((t*474)+2069)>>6)>>7)&1)))&127)-64)*13)))+(((((((((t<26112)?(26112-t):0))>>6)*((((t<26112)?(26112-t):0))>>6))>>8)*((t<64)?t:64))>>6)*((((((((t*166)+6151)>>6)^(-(((((t*166)+6151)>>6)>>7)&1)))&127)-64)*32)+(((((((t*602)+14371)>>6)^(-(((((t*602)+14371)>>6)>>7)&1)))&127)-64)*9))))+(((((((((t<27136)?(27136-t):0))>>6)*((((t<27136)?(27136-t):0))>>6))>>8)*((t<64)?t:64))>>6)*(((((((t*610)+12302)>>6)^(-(((((t*610)+12302)>>6)>>7)&1)))&127)-64)*21)))+(((((((((((t<27136)?(27136-t):0))>>6)*((((t<27136)?(27136-t):0))>>6))>>8)*((t<64)?t:64))>>6)*(((t>>2)<256)?(t>>2):256))>>8)*(((((((t*2849)+8220)>>6)^(-(((((t*2849)+8220)>>6)>>7)&1)))&127)-64)*9)))+(((((((((t<26112)?(26112-t):0))>>6)*((((t<26112)?(26112-t):0))>>6))>>8)*(((t>>2)<256)?(t>>2):256))>>8)*((((((((((t*166)>>6)^((t*4792)>>6))&255)-128)>>1)*16)+(((((((t*466)>>6)^((t*2849)>>6))&255)-128)>>1)*16))+(((((((((t>>1)*2654435761)^(((t>>1)*2654435761)>>15))&65535)*40503)>>9)&127)-64)*12))+(((((((((t>>1)*2654435761)^(((t>>1)*2654435761)>>15))&65535)*40503)>>9)&127)-64)*14))))+(((((((((t<24064)?(24064-t):0))>>6)*((((t<24064)?(24064-t):0))>>6))>>8)*(((t>>2)<256)?(t>>2):256))>>8)*(((((((t*456)>>6)^((t*3494)>>6))&255)-128)>>1)*16)))+(((((t<320)?(320-t):0))>>2)*(((((((((t>>6)*2654435761)^(((t>>6)*2654435761)>>15))&65535)*40503)>>9)&127)-64)*700)))+(((((t<1920)?(1920-t):0))>>4)*((((((((t*166)>>6)^(-((((t*166)>>6)>>7)&1)))&127)-64)*180)+((((((t*466)>>6)^(-((((t*466)>>6)>>7)&1)))&127)-64)*180))+((((((t*474)>>6)^(-((((t*474)>>6)>>7)&1)))&127)-64)*180))))>>16))"
   }
 }
 

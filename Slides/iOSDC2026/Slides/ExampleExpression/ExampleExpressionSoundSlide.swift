@@ -12,7 +12,7 @@ import SwiftUI
 @Slide
 struct ExampleExpressionSoundSlide: View {
   enum SlidePhasedState: Int, PhasedState {
-    case initial, second, third, fourth
+    case initial, second, third, fourth, fifth
   }
 
   @Environment(\.isSoundEnabled) private var isSoundEnabled: Bool
@@ -41,7 +41,7 @@ struct ExampleExpressionSoundSlide: View {
         switch newValue {
         case .initial:
           controller.stop()
-        case .second, .third, .fourth:
+        case .second, .third, .fourth, .fifth:
           try controller.play(expression: newValue.expression)
         }
       } catch {
@@ -76,6 +76,12 @@ struct ExampleExpressionSoundSlide: View {
       8bitなので足し算は折り返します、混ぜるのではなく算術です
       tの式として評価できれば、音になります
       """
+    case .fifth:
+      """
+      最後に、音高を配列で並べます
+      16個の数字が、そのまま旋律です
+      旋律も、式の中のデータとして表現できます
+      """
     }
   }
 }
@@ -83,9 +89,18 @@ struct ExampleExpressionSoundSlide: View {
 private extension ExampleExpressionSoundSlide.SlidePhasedState {
   private var segments: (head: String, accent: String, tail: String) {
     switch self {
-    case .initial, .second: ("t*(42", "&", "t>>10)")
-    case .third: ("t*(42", "^", "t>>10)")
-    case .fourth: ("t*(42&t>>10)", "+t*(42&t>>11)", "")
+    case .initial, .second:
+      ("t*(42", "&", "t>>10)")
+    case .third:
+      ("t*(42", "^", "t>>10)")
+    case .fourth:
+      ("t*(42&t>>10)", "+t*(42&t>>11)", "")
+    case .fifth:
+      (
+        "(t*",
+        "[601,900,1201,900,714,1070,1348,1070,601,802,1201,0,674,802,900,0]",
+        "[t>>10&15]>>6&255)*(~t&1023)>>10"
+      )
     }
   }
 
@@ -97,6 +112,7 @@ private extension ExampleExpressionSoundSlide.SlidePhasedState {
     switch self {
     case .initial, .second, .third: 160
     case .fourth: 136
+    case .fifth: 100
     }
   }
 
@@ -106,7 +122,7 @@ private extension ExampleExpressionSoundSlide.SlidePhasedState {
     case .initial:
       return Text("\(head)\(Text(accent))\(tail)")
         .foregroundStyle(.tertiary)
-    case .second, .third, .fourth:
+    case .second, .third, .fourth, .fifth:
       return Text("\(head)\(Text(accent).foregroundStyle(.yellow))\(tail)")
         .foregroundStyle(.primary)
     }

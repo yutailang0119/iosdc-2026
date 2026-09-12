@@ -25,11 +25,16 @@ struct ResamplingSlide: View {
     let ratio = 8000.0 / sampleRate
     let step = UInt64(ratio * Double(UInt64(1) << 32))
     var accumulator: UInt64 = 0
+    var held: Float = 0
 
     func evaluate() -> Float {
+      let previous = UInt32(accumulator >> 32)
       accumulator &+= step
       let t = UInt32(accumulator >> 32)
-      return mixer.sample(t: t)
+      if t != previous {
+        held = mixer.sample(t: t)
+      }
+      return held
     }
     """
   }

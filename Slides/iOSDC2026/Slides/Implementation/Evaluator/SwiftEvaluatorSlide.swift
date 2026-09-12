@@ -21,7 +21,7 @@ struct SwiftEvaluatorSlide: View {
     """
     indirect enum Expression {
       case number(Double)
-      case time
+      case variable(Int)
       case binary(BinaryOperator, Expression, Expression)
       ...
     }

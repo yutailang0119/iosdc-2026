@@ -21,10 +21,9 @@ struct IntroductionExpressionSoundSlide: View {
     scopeColumnCount: 512,
     samplesPerColumn: 1
   )
-  private let expression = "t*(42&t>>10)"
 
   var body: some View {
-    TitleLayout(text: expression)
+    TitleLayout(text: phase.expression)
       .foregroundStyle(phase.foregroundStyle)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
       .background {
@@ -41,7 +40,7 @@ struct IntroductionExpressionSoundSlide: View {
           case .initial:
             controller.stop()
           case .second:
-            try controller.play(expression: expression)
+            try controller.play(expression: newValue.expression)
           }
         } catch {
           print(error)
@@ -69,6 +68,10 @@ struct IntroductionExpressionSoundSlide: View {
 }
 
 private extension IntroductionExpressionSoundSlide.SlidePhasedState {
+  var expression: String {
+    "t*(42&t>>10)"
+  }
+
   var foregroundStyle: HierarchicalShapeStyle {
     switch self {
     case .initial: .tertiary

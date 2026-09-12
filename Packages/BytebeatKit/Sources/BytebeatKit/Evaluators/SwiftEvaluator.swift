@@ -11,7 +11,10 @@ package struct SwiftEvaluator: Sendable, BytebeatEvaluator {
   }
 
   package func evaluate(t: UInt32) -> UInt8 {
-    withUnsafeTemporaryAllocation(of: Double.self, capacity: slotCount) { slots in
+    withUnsafeTemporaryAllocation(
+      of: Double.self,
+      capacity: slotCount
+    ) { slots in
       slots.initialize(repeating: .nan)
       slots[0] = Double(t)
       let value = root.evaluate(slots: slots)
@@ -68,7 +71,15 @@ extension SwiftEvaluator {
           ? then.evaluate(slots: slots)
           : alternative.evaluate(slots: slots)
       case let .call(function, arguments):
-        return function.apply(arguments.map { $0.evaluate(slots: slots) })
+        return withUnsafeTemporaryAllocation(
+          of: Double.self,
+          capacity: arguments.count
+        ) { values in
+          for (i, argument) in arguments.enumerated() {
+            values.initializeElement(at: i, to: argument.evaluate(slots: slots))
+          }
+          return function.apply(UnsafeBufferPointer(values))
+        }
       case let .array(elements):
         return switch elements.count {
         case 0: 0
@@ -202,7 +213,7 @@ extension SwiftEvaluator {
     case min
     case max
 
-    func apply(_ arguments: [Double]) -> Double {
+    func apply(_ arguments: UnsafeBufferPointer<Double>) -> Double {
       func arg(_ index: Int) -> Double {
         index < arguments.count ? arguments[index] : .nan
       }

@@ -2,6 +2,7 @@ final class BytebeatDSP: @unchecked Sendable {
   private let step: UInt64
   private var accumulator: UInt64
   private let mixer: BytebeatMixer
+  private var held: Float
 
   init(sampleRate: Double) {
     let sampleRate = sampleRate > 0 ? sampleRate : 44100
@@ -9,11 +10,14 @@ final class BytebeatDSP: @unchecked Sendable {
     self.step = UInt64(ratio * Double(UInt64(1) << 32))
     self.accumulator = 0
     self.mixer = BytebeatMixer()
+    self.held = 0
   }
 
   @inline(__always)
   func refresh() {
-    mixer.refresh()
+    if mixer.refresh() {
+      held = mixer.sample(t: UInt32(accumulator >> 32))
+    }
   }
 
   @inline(__always)
@@ -21,7 +25,11 @@ final class BytebeatDSP: @unchecked Sendable {
     let previous = UInt32(accumulator >> 32)
     accumulator &+= step
     let t = UInt32(accumulator >> 32)
-    return (mixer.sample(t: t), t != previous)
+    let isNewStep = t != previous
+    if isNewStep {
+      held = mixer.sample(t: t)
+    }
+    return (held, isNewStep)
   }
 
   func setEvaluator(_ evaluator: any BytebeatEvaluator) {

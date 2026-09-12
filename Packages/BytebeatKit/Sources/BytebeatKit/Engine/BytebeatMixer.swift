@@ -28,13 +28,14 @@ final class BytebeatMixer: @unchecked Sendable {
   }
 
   @inline(__always)
-  func refresh() {
+  func refresh() -> Bool {
     exchange.withLockIfAvailable { exchange in
-      guard let pending = exchange.pending else { return }
+      guard let pending = exchange.pending else { return false }
       exchange.pending = nil
       exchange.retired = voice
       voice = pending
-    }
+      return true
+    } ?? false
   }
 
   @inline(__always)

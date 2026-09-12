@@ -20,7 +20,8 @@ struct EvaluatorTitleSlide: View {
 
   var script: String {
     """
-    次に、式をどう評価するかです
+    次に、式をどう評価するか
+    先ほど1文字変えて音が変わったのは、式が実行時の文字列だからです
     """
   }
 }

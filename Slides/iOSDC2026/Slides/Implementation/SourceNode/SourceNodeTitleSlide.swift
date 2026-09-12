@@ -20,7 +20,7 @@ struct SourceNodeTitleSlide: View {
 
   var script: String {
     """
-    まず、音を鳴らすところです
+    まず、音を鳴らすために
     """
   }
 }

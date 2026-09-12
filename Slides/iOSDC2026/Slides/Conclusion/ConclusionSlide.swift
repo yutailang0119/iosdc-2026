@@ -62,7 +62,7 @@ struct ConclusionSlide: View {
 
     Swiftでも、標準フレームワークだけで書けます
     なめらかな音のために、再生に間に合わせることだけが重要です
-    ただ、JavaScriptCoreが間に合わないので、Evaluatorも自作しました
+    ただ、JavaScriptCoreでは足りないので、Evaluatorも自作しています
 
     コードはこのリポジトリにあります
     ぜひ手元で式を変えて遊んでみてください

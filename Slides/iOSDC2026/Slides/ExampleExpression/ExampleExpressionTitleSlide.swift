@@ -17,8 +17,8 @@ struct ExampleExpressionTitleSlide: View {
 
   var script: String {
     """
-    この式はBytebeatの有名な例でした
-    分解していきます
+    タイトルの式はBytebeatの有名な例でした
+    分解していきましょう
     """
   }
 }

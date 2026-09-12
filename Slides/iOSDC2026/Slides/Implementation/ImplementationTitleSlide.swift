@@ -22,7 +22,7 @@ struct ImplementationTitleSlide: View {
 
   var script: String {
     """
-    ここからが本題です
+    ここからはSwiftでの実装を考えます
     """
   }
 }

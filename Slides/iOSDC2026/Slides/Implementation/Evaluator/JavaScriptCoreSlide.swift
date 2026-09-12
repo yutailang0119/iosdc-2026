@@ -34,11 +34,14 @@ struct JavaScriptCoreSlide: View {
 
   var script: String {
     """
-    Bytebeatの式は、実はJavaScriptです
-    なのでJavaScriptCoreに渡せば、これだけで動きます
+    Bytebeatの式は、JavaScriptとしてそのまま評価できます
+    なのでJavaScriptCoreに渡せば、理論上これだけで動きます
     式を関数の中に埋め込んで、tを渡して呼ぶ
-    返ってきた値を下位8ビットに切り詰めるだけです
-    エラー処理は省いていますが、実質7行です
+    返ってきた値を下位8ビットに切り詰めるだけ
+    エラー処理は省いていますが、10行足らずです
+
+    ただ、JSValueの呼び出しは、オーディオスレッドでは実用に足りません
+    メモリ確保やロックが起きるので、締切に間に合いません
     """
   }
 }

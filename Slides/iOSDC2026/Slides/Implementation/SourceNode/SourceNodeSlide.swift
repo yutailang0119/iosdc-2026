@@ -41,7 +41,7 @@ struct SourceNodeSlide: View {
   var script: String {
     """
     AVAudioSourceNodeは、音が必要になったタイミングでクロージャを呼びます
-    frameCountが要求されたサンプル数なので、その数だけ書いてnoErrを返すだけです
+    frameCountが要求されたサンプル数なので、その数ぶんバッファを埋めてnoErrを返すだけ
     音源ファイルもオシレータも要りません
     """
   }

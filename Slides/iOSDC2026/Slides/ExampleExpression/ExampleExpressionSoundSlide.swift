@@ -67,7 +67,7 @@ struct ExampleExpressionSoundSlide: View {
       """
       1文字だけ変えて、ANDをXORにします
       休符が消えて、リズムがなくなりました
-      0になる瞬間がなくなったからです
+      0になる瞬間がほぼなくなったからです
       """
     case .fourth:
       """

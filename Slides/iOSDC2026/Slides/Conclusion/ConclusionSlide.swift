@@ -34,6 +34,22 @@ struct ConclusionSlide: View {
             .scaledToFit()
             .frame(width: 52, height: 52)
         }
+      } child: {
+        Item {
+          Label {
+            Link(
+              destination: URL(string: "https://github.com/mtj0928/SlideKit")!
+            ) {
+              Text("mtj0928/SlideKit")
+                .multilineTextAlignment(.leading)
+            }
+          } icon: {
+            Image(.gitHub)
+              .resizable()
+              .scaledToFit()
+              .frame(width: 52, height: 52)
+          }
+        }
       }
     }
     .background(.background)

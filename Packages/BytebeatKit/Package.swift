@@ -17,11 +17,19 @@ let package = Package(
     .library(
       name: "BytebeatKit",
       targets: ["BytebeatKit"]
-    )
+    ),
+    .library(
+      name: "BytebeatPlayground",
+      targets: ["BytebeatPlayground"]
+    ),
   ],
   targets: [
     .target(
       name: "BytebeatKit"
+    ),
+    .target(
+      name: "BytebeatPlayground",
+      dependencies: ["BytebeatKit"]
     ),
     .testTarget(
       name: "BytebeatKitTests",

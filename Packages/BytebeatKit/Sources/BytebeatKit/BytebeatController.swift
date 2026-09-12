@@ -4,7 +4,7 @@ import SwiftUI
 @MainActor
 public final class BytebeatController {
   private let engine: BytebeatEngine
-  private(set) var isPlaying: Bool
+  package private(set) var isPlaying: Bool
 
   private let scopeColumnCount: Int
   private let samplesPerColumn: Int

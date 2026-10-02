@@ -1,5 +1,9 @@
 enum BytebeatPreset: String, CaseIterable, Identifiable {
   case pulse
+  case and
+  case xor
+  case layered
+  case melody
   case megalovania
   case flight
   case flygames
@@ -10,6 +14,7 @@ enum BytebeatPreset: String, CaseIterable, Identifiable {
   var title: String {
     switch self {
     case .pulse: "Pulse"
+    case .and, .xor, .layered, .melody: expression
     case .megalovania: "MEGALOVANIA"
     case .flight: "Flight"
     case .flygames: "Flygames"
@@ -21,6 +26,14 @@ enum BytebeatPreset: String, CaseIterable, Identifiable {
     switch self {
     case .pulse:
       "((t&4095)<800)*(t>>3&1)*(800-(t&4095))>>3"
+    case .and:
+      "t*(42&t>>10)"
+    case .xor:
+      "t*(42^t>>10)"
+    case .layered:
+      "t*(42&t>>10)+t*(42&t>>11)"
+    case .melody:
+      "(t*[601,900,1201,900,714,1070,1348,1070,601,802,1201,0,674,802,900,0][t>>10&15]>>6&255)*(~t&1023)>>10"
     case .megalovania:
       "(t*[601,601,1202,0,901,0,0,851,0,803,0,715,0,601,715,803][t>>10&15]>>6&255)*(~t&1023)>>10"
     case .flight:

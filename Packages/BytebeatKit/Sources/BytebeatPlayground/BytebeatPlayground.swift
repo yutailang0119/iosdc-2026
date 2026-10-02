@@ -17,7 +17,7 @@ struct BytebeatPlayground: View {
       HStack {
         Picker("Preset", selection: $preset) {
           ForEach(BytebeatPreset.allCases) { preset in
-            Text(preset.title).tag(preset)
+            Text(preset.label).tag(preset)
           }
         }
         .onChange(of: preset, initial: true) { _, newValue in

@@ -11,7 +11,7 @@ enum BytebeatPreset: String, CaseIterable, Identifiable {
 
   var id: Self { self }
 
-  var title: String {
+  var label: String {
     switch self {
     case .pulse: "Pulse"
     case .and, .xor, .layered, .melody: expression
